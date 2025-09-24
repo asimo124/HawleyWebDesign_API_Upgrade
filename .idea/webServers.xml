@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="49c27d8b-bd46-4851-b8d2-6fb08aa2a2fd" name="DigOcean4" url="http://api.hawleywebdesign.com">
+        <fileTransfer rootFolder="/var/www/api.hawleywebdesign.com" accessType="SFTP" host="104.248.121.215" port="22" sshConfigId="8d47ee80-ce8f-404c-8d28-ab44a40c5e5a" sshConfig="alex@104.248.121.215:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
