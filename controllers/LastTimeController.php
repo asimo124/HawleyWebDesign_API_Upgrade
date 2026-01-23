@@ -167,6 +167,41 @@ class LastTimeController extends Controller
         }
     }
 
+    public function actionSearch()
+    {
+
+        $request = Yii::$app->request;
+        $itemId = $request->get('item_id', 0);
+
+        if (!$itemId) {
+            header("Content-type: text/json");
+
+            echo json_encode([]);
+            die();
+        }
+
+        $sql = "SELECT iuh.item_id, iuh.date_used, i.title, i.color 
+        FROM ltc_item_used_history iuh 
+        INNER JOIN ltc_item i 
+            oN iuh.item_id = i.id 
+        WHERE 1 
+        AND iuh.item_id = :item_id 
+        ORDER BY iuh.date_used DESC";
+
+        $stmt = Yii::$app->db->createCommand($sql);
+        $stmt->bindParam(':item_id', $itemId);
+        $items = $stmt->queryAll();
+
+        foreach ($items as &$getItem) {
+            $getItem['date_used'] = date("M j, Y", strtotime($getItem['date_used']));
+        }
+
+        header("Content-type: text/json");
+
+        echo json_encode($items);
+        die();
+    }
+
     /**
      * Displays homepage.
      *
