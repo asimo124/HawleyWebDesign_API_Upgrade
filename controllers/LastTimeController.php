@@ -124,6 +124,18 @@ class LastTimeController extends Controller
         $itemUsedHistory->date_used = $dateUsed;
         $itemUsedHistory->save();
 
+        if ($itemId == 157) {
+
+            for ($i = 0; $i < 180; $i++) {
+                $dateUsed = date("Y-m-d", strtotime($dateUsed . " +2 day"));
+
+                $itemUsedHistory = new ItemUsedHistory();
+                $itemUsedHistory->item_id = $itemId;
+                $itemUsedHistory->date_used = $dateUsed;
+                $itemUsedHistory->save();
+            }
+        }
+
         header("Content-type: text/json");
 
         echo json_encode([
@@ -147,7 +159,19 @@ class LastTimeController extends Controller
 
         $itemUsedHistory = ItemUsedHistory::findOne(intval($id));
         if ($itemUsedHistory) {
-            $itemUsedHistory->delete();
+
+
+            if ($itemUsedHistory->item_id == 157) {
+
+                $itemId = $itemUsedHistory->item_id;
+                $sql = "DELETE FROM ltc_item_used_history WHERE item_id = :item_id";
+                $stmt = Yii::$app->db->createCommand($sql);
+                $stmt->bindParam(':item_id', $itemId);
+                $stmt->execute();  
+
+            } else {
+                $itemUsedHistory->delete();
+            }
 
             header("Content-type: text/json");
 
