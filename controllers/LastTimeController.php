@@ -238,7 +238,7 @@ class LastTimeController extends Controller
         $request = Yii::$app->request;
         $get_days_back = $request->get('daysBack', 0);
 
-        $pay_date = date("Y-m-d", strtotime(date("Y-m-d") . " +14 day"));
+        $pay_date = date("Y-m-d", strtotime(date("Y-m-d") . " +91 day"));
 
         $date = new DateTime($pay_date);
         $date->modify("-$get_days_back day");
@@ -254,7 +254,7 @@ class LastTimeController extends Controller
         $start_date2 = date("Y-m-d", strtotime($pay_date));
         $dayNum = date("w", strtotime($start_date2));
 
-        $daysBack = 77 + $dayNum;
+        $daysBack = 77 + 42 + $dayNum;
 
         $date = new DateTime($pay_date);
         $date->modify("-$daysBack day");
