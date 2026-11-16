@@ -27,13 +27,21 @@ class User extends ActiveRecord implements IdentityInterface
         return static::find()->where(['username' => $username])->one();
     }
 
+    /**
+     * Checks $password against this user's stored bcrypt hash.
+     * (Previously this hashed $password and compared it with itself, so any password passed.)
+     */
     public function validatePassword($password) {
+        $hash = (string) $this->password_hash;
+        if ($password === null || $password === '' || $hash === '') {
+            return false;
+        }
 
-        $hash = \Yii::$app->getSecurity()->generatePasswordHash($password);
-
-        if (\Yii::$app->getSecurity()->validatePassword($password, $hash)) {
-            return true;
-        } else {
+        try {
+            return \Yii::$app->getSecurity()->validatePassword((string) $password, $hash);
+        } catch (\yii\base\InvalidArgumentException $e) {
+            // Malformed hash in the database: refuse rather than error.
+            \Yii::warning("Invalid password hash for user #{$this->id}", __METHOD__);
             return false;
         }
     }
